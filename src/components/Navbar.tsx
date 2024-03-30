@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
             ),
           )}
         </div>
-        <div className="flex space-x-8">
+        <div className="ml-16 flex space-x-8">
           <SearchIcon width={32} height={32} />
           <CartIcon width={32} height={32} />
         </div>
