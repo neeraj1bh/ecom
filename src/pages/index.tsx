@@ -1,11 +1,7 @@
 import Head from "next/head";
-import Navbar from "~/components/Navbar";
-
-import { api } from "~/utils/api";
+import Login from "~/components/Login";
 
 export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>
@@ -13,7 +9,7 @@ export default function Home() {
         <meta name="description" content="Ecom app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar />
+      <Login />
     </>
   );
 }
