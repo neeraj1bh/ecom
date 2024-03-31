@@ -14,6 +14,10 @@ const Signup: React.FC = () => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     console.log({ name, email, password });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    router.push(
+      `/verify-email?name=${name}&email=${email}&password=${password}`,
+    );
   }
 
   return (

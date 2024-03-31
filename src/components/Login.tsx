@@ -1,20 +1,57 @@
-import React, { type FormEvent, useState } from "react";
+import React, { type FormEvent, useState, useEffect } from "react";
 import Button from "./Button";
 import TextLink from "./TextLink";
+import { useRouter } from "next/router";
+import authenticated from "~/utils/authentication";
 
 const Login: React.FC = () => {
+  const router = useRouter();
+
   const [passwordShown, setPasswordShown] = useState(false);
 
   function togglePasswordVisibility() {
     setPasswordShown(!passwordShown);
   }
 
+  useEffect(() => {
+    if (authenticated()) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push("/dashboard");
+    }
+  }, []);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    console.log({ email, password });
+    const email = formData.get("email")?.toString() ?? "";
+    const password = formData.get("password")?.toString() ?? "";
+
+    try {
+      const response = await fetch("/api/login/route", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const { id, name } = data.message;
+
+        console.log("Logged in successfully:", email);
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({ id, name, email, isLoggedIn: true }),
+        );
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        router.push("/dashboard");
+      } else {
+        console.error("Invalid credentials for:", email);
+        localStorage.removeItem("userData");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      localStorage.removeItem("userData");
+    }
   }
 
   return (

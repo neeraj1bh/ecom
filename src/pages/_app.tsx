@@ -1,4 +1,5 @@
 import { type AppType } from "next/app";
+import { useRouter } from "next/router";
 import { Inter } from "next/font/google";
 
 import { api } from "~/utils/api";
@@ -11,9 +12,12 @@ const inter = Inter({
   variable: "--font-sans",
 });
 const MyApp: AppType = ({ Component, pageProps }) => {
+  const router = useRouter();
+  const showNavbar = router.pathname !== "/coming-soon";
+
   return (
     <main className={`font-sans ${inter.variable}`}>
-      <Navbar />
+      {showNavbar && <Navbar />}
       <Component {...pageProps} />
     </main>
   );
