@@ -30,6 +30,7 @@ const Verify: React.FC<VerifyProps> = ({ name, email, password }) => {
       sendEmail(email);
       initialRender.current = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendEmail = async (email: string) => {

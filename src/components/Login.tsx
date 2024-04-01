@@ -2,10 +2,11 @@ import React, { type FormEvent, useState, useEffect } from "react";
 import Button from "./Button";
 import TextLink from "./TextLink";
 import { useRouter } from "next/router";
-import authenticated from "~/utils/authentication";
+import { useAuthenticated } from "~/hooks/useAuthenticated";
 
 const Login: React.FC = () => {
   const router = useRouter();
+  const isAuthenticated = useAuthenticated();
 
   const [passwordShown, setPasswordShown] = useState(false);
 
@@ -13,12 +14,13 @@ const Login: React.FC = () => {
     setPasswordShown(!passwordShown);
   }
 
+  console.log(isAuthenticated);
   useEffect(() => {
-    if (authenticated()) {
+    if (isAuthenticated) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push("/dashboard");
     }
-  }, []);
+  }, [isAuthenticated, router]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
