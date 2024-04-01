@@ -1,7 +1,9 @@
 import React from "react";
+import Dashboard from "~/components/Dashboard";
+import withAuth from "~/components/WithAuth";
 
-function Dashboard() {
-  return <div>Dashboard</div>;
+function AuthenticatedDashboard() {
+  return <Dashboard />;
 }
 
-export default Dashboard;
+export default withAuth(AuthenticatedDashboard);
