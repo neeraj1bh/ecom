@@ -103,6 +103,15 @@ const categories = [
   "Snow Removal",
   "Landscaping",
   "Watering Equipment",
+  "Electrical Supplies",
+  "Home Improvement",
+  "Outdoor Living",
+  "Fitness & Exercise",
+  "Craft Supplies",
+  "Party Supplies",
+  "Musical Instruments",
+  "Stationery",
+  "Travel Accessories",
 ];
 
 const initializeCategories = async () => {
@@ -119,6 +128,8 @@ const initializeCategories = async () => {
     console.log("Categories initialization completed successfully.");
   } catch (error) {
     console.error("Error initializing categories:", error);
+  } finally {
+    await db.$disconnect(); // Disconnect Prisma client
   }
 };
 
