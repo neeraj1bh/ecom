@@ -45,8 +45,8 @@ const Signup: React.FC = () => {
         <meta name="description" content="Signup | Ecom" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="mx-auto my-12 flex h-[600px] w-[550px] flex-col rounded-2xl border  border-[#C1C1C1]">
-        <h2 className="mt-10 text-center text-3xl font-semibold text-black">
+      <div className="mx-auto my-12 flex min-h-[600px] w-[550px] flex-col rounded-2xl border border-[#C1C1C1]  py-10">
+        <h2 className="text-center text-3xl font-semibold text-black">
           Create your account
         </h2>
 

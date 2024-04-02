@@ -24,7 +24,13 @@ const CategoriesList: FC<Props> = ({ category, liked, setLiked }) => {
     <>
       <Items currentItems={currentItems} liked={liked} setLiked={setLiked} />
       <div className="mt-20 flex space-x-4">
-        <button className="font-semibold" onClick={() => setForcedPage(0)}>
+        <button
+          className="font-semibold"
+          onClick={() => {
+            setForcedPage(0);
+            handlePageClick(0);
+          }}
+        >
           {"<<"}
         </button>
         <ReactPaginate
@@ -42,7 +48,10 @@ const CategoriesList: FC<Props> = ({ category, liked, setLiked }) => {
         />
         <button
           className="font-semibold"
-          onClick={() => setForcedPage(totalPages - 1)}
+          onClick={() => {
+            setForcedPage(totalPages - 1);
+            handlePageClick(totalPages - 1);
+          }}
         >
           {">>"}
         </button>
