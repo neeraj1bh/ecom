@@ -65,8 +65,6 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  console.log(loading);
-
   if (loading) {
     return <Spinner />;
   }
