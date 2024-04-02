@@ -11,7 +11,7 @@ interface Props extends LikeProps {
 
 const CategoriesList: FC<Props> = ({ category, liked, setLiked }) => {
   const [startItemIndex, setStartItemIndex] = useState(0);
-  const [forcedPage, setForcedPage] = useState(1);
+  const [forcedPage, setForcedPage] = useState(0);
   const endItemIndex = startItemIndex + itemsPerPage;
   const currentItems = category.slice(startItemIndex, endItemIndex);
   const totalPages = Math.ceil(category.length / itemsPerPage);
