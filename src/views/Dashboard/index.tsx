@@ -5,9 +5,11 @@ import LogoutIcon from "~/assets/LogoutIcon";
 import CategoriesList from "./CategoriesList";
 import type { LikedCategory } from "~/interfaces/dashboard";
 import toast from "react-hot-toast";
+import Spinner from "~/components/Spinner";
 
 const Dashboard: React.FC = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [category, setCategories] = useState<LikedCategory[]>([]);
   const [liked, setLiked] = useState<number[]>([]);
 
@@ -16,6 +18,7 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const fetchData = async () => {
+    setLoading(true);
     const userData = localStorage.getItem("userData");
     const { id: userId } = userData ? JSON.parse(userData) : null;
 
@@ -44,8 +47,10 @@ const Dashboard: React.FC = () => {
       } else {
         toast.error("Error fetching liked categories");
       }
+      setLoading(false);
     } catch (error) {
       toast.error("Something went wrong");
+      setLoading(false);
     }
   };
 
@@ -58,6 +63,12 @@ const Dashboard: React.FC = () => {
       console.error("Error logging out:", error);
     }
   };
+
+  console.log(loading);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="relative">
