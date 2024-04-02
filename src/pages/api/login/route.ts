@@ -25,7 +25,7 @@ export default async function handler(
       bcrypt.compare(password, hash, function (err: any, result: any) {
         if (result === true) {
           // Authentication successful
-          console.log("User authenticated:", user.id);
+          console.log("User authenticated");
           res.status(200).json({ message: { id: user.id, name: user.name } });
         } else {
           // Password does not match
