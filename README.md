@@ -1,29 +1,152 @@
-# Create T3 App
+# Project: E-Commerce Dashboard
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Overview
 
-## What's next? How do I make an app with this?
+This project is an E-Commerce Dashboard built using Next.js with various features such as user authentication, email verification using OTP, protected routes, and a dashboard for updating users' liked categories. The backend is powered by a Neon PostgreSQL database and utilizes Gmail OAuth API for sending emails and Nodemailer for email handling.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+### Live Demo
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+[Click here to see it live](https://ecom.nb9t7.app/)
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+<img alt="E-commerce Dashboard" src="https://github.com/neeraj1bh/ecom/assets/55753068/c290e465-6bc7-4edf-9286-232214c5dd53">
+
+## Features
+
+- **User Authentication**: Users can sign up, log in, and log out securely.
+- **Email Verification using OTP**: Users are required to verify their email addresses using a one-time password (OTP) sent to their registered email.
+- **Protected Routes**: Certain routes are protected and can only be accessed by authenticated users.
+- **Dashboard**: Provides a user-friendly interface for updating users' liked categories.
+- **Hosted on Vercel**: The application is hosted on the Vercel platform for easy deployment and scalability.
+
+## Tech Stack
+
+- **Frontend**: Next.js, React, Tailwind CSS
+- **Backend**: Neon PostgreSQL, Prisma
+- **Authentication**: NextAuth.js
+- **API Integration**: tRPC
+- **Email Handling**: Gmail OAuth API, Nodemailer
+
+## Installation and Usage
+
+```bash
+git clone https://github.com/neeraj1bh/ecom.git
+cd ecom
+yarn
+yarn dev
+```
+
+## Project Structure
+
+```
+.
+├── README.md
+├── commitlint.config.cjs
+├── next-env.d.ts
+├── next.config.js
+├── package.json
+├── postcss.config.cjs
+├── prettier.config.js
+├── prisma
+│   ├── initialize.js
+│   ├── migrations
+│   │   ├── 20240331050856_users
+│   │   │   └── migration.sql
+│   │   ├── 20240402024946_verified
+│   │   │   └── migration.sql
+│   │   └── migration_lock.toml
+│   └── schema.prisma
+├── public
+│   └── favicon.ico
+├── src
+│   ├── assets
+│   │   ├── CaretLeftIcon.tsx
+│   │   ├── CaretRightIcon.tsx
+│   │   ├── CartIcon.tsx
+│   │   ├── LogoutIcon.tsx
+│   │   ├── SearchIcon.tsx
+│   │   ├── SpinnerIcon.tsx
+│   │   └── index.ts
+│   ├── components
+│   │   ├── Button.tsx
+│   │   ├── Input.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── TextLink.tsx
+│   │   └── WithAuth.tsx
+│   ├── env.js
+│   ├── forms
+│   │   ├── useLoginForm.ts
+│   │   └── useSignupForm.ts
+│   ├── hooks
+│   │   └── useAuthenticated.ts
+│   ├── interfaces
+│   │   └── dashboard.ts
+│   ├── pages
+│   │   ├── _app.tsx
+│   │   ├── api
+│   │   │   ├── category
+│   │   │   │   └── route.ts
+│   │   │   ├── email
+│   │   │   │   ├── send
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── verify
+│   │   │   │       └── route.ts
+│   │   │   ├── login
+│   │   │   │   └── route.ts
+│   │   │   ├── selected-category
+│   │   │   │   ├── [id]
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── route.ts
+│   │   │   └── trpc
+│   │   │       └── [trpc].ts
+│   │   ├── coming-soon
+│   │   │   └── index.tsx
+│   │   ├── dashboard
+│   │   │   └── index.tsx
+│   │   ├── index.tsx
+│   │   ├── signup
+│   │   │   └── index.tsx
+│   │   └── verify-email
+│   │       └── index.tsx
+│   ├── server
+│   │   ├── api
+│   │   │   ├── root.ts
+│   │   │   └── trpc.ts
+│   │   └── db.ts
+│   ├── styles
+│   │   └── globals.css
+│   ├── utils
+│   │   └── api.ts
+│   └── views
+│       ├── Dashboard
+│       │   ├── CategoriesList.tsx
+│       │   ├── Items.tsx
+│       │   └── index.tsx
+│       ├── Login
+│       │   └── index.tsx
+│       └── Signup
+│           ├── Verify.tsx
+│           └── index.tsx
+├── start-database.sh
+├── tailwind.config.ts
+├── tree_output.txt
+├── tsconfig.json
+└── yarn.lock
+
+33 directories, 59 files
+
+```
+
+## Getting Started
+
+1. Clone the repository and navigate to the project directory.
+2. Install dependencies using `yarn`.
+3. Run the development server using `yarn dev`.
+4. Access the application in your browser at `http://localhost:3000`.
 
 ## Learn More
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+For more information about the project and its components, please refer to the documentation and learning resources provided in the project's README file.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Deployment
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Follow the deployment guides provided in the project's documentation for deploying the application on Vercel.
