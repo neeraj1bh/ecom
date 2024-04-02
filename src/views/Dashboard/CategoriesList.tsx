@@ -11,6 +11,7 @@ interface Props extends LikeProps {
 
 const CategoriesList: FC<Props> = ({ category, liked, setLiked }) => {
   const [startItemIndex, setStartItemIndex] = useState(0);
+  const [forcedPage, setForcedPage] = useState(1);
   const endItemIndex = startItemIndex + itemsPerPage;
   const currentItems = category.slice(startItemIndex, endItemIndex);
   const totalPages = Math.ceil(category.length / itemsPerPage);
@@ -23,7 +24,7 @@ const CategoriesList: FC<Props> = ({ category, liked, setLiked }) => {
     <>
       <Items currentItems={currentItems} liked={liked} setLiked={setLiked} />
       <div className="mt-20 flex space-x-4">
-        <button className="font-semibold" onClick={() => handlePageClick(0)}>
+        <button className="font-semibold" onClick={() => setForcedPage(0)}>
           {"<<"}
         </button>
         <ReactPaginate
@@ -33,6 +34,7 @@ const CategoriesList: FC<Props> = ({ category, liked, setLiked }) => {
           pageRangeDisplayed={7}
           pageCount={totalPages}
           previousLabel="< "
+          forcePage={forcedPage}
           marginPagesDisplayed={0}
           activeClassName="!text-black"
           pageClassName="text-gray-500"
@@ -40,7 +42,7 @@ const CategoriesList: FC<Props> = ({ category, liked, setLiked }) => {
         />
         <button
           className="font-semibold"
-          onClick={() => handlePageClick(totalPages - 1)}
+          onClick={() => setForcedPage(totalPages - 1)}
         >
           {">>"}
         </button>
