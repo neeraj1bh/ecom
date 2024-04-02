@@ -6,7 +6,7 @@ This project is an E-Commerce Dashboard built using Next.js with various feature
 
 ### Live Demo
 
-[Click here to see it live](https://ecom.nb9t7.app/)
+[Click here to see it live](https://ecom.nb9t7.com/)
 
 <img alt="E-commerce Dashboard" src="https://github.com/neeraj1bh/ecom/assets/55753068/c290e465-6bc7-4edf-9286-232214c5dd53">
 
