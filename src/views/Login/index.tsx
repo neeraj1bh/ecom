@@ -58,11 +58,9 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto my-12 flex h-[600px] w-[550px] flex-col rounded-2xl border border-[#C1C1C1]">
+    <div className="mx-auto my-12 flex min-h-[600px] w-[550px] flex-col rounded-2xl border border-[#C1C1C1] py-10">
       <div>
-        <h2 className="mt-10 text-center text-3xl font-bold text-black">
-          Login
-        </h2>
+        <h2 className="text-center text-3xl font-bold text-black">Login</h2>
         <p className="mt-6 text-center text-xl font-semibold text-black">
           Welcome back to ECOMMERCE
         </p>
