@@ -1,45 +1,45 @@
+import type { FC } from "react";
+import toast from "react-hot-toast";
 import type { LikedCategory, LikeProps } from "~/interfaces/dashboard";
 
-interface ItemsProps extends LikeProps {
+interface Props extends LikeProps {
   currentItems: LikedCategory[];
 }
 
-export function Items({ currentItems, liked, setLiked }: ItemsProps) {
+const Items: FC<Props> = ({ currentItems, liked, setLiked }) => {
   const handleLikedCategories = async (likedId: number, isLiked: boolean) => {
+    setLiked([...liked, likedId]);
     const userData = localStorage.getItem("userData");
     const { id: userId } = userData ? JSON.parse(userData) : null;
 
+    // the update is built with the optimistic response pattern where the UI is updated before the API call is finsihed
     if (isLiked) {
+      setLiked([...liked, likedId]);
       try {
-        const response = await fetch("/api/selected-category/route", {
+        await fetch("/api/selected-category/route", {
           method: "POST",
           body: JSON.stringify({
             userId,
             likedId,
           }),
         });
-
-        if (response.ok) {
-          setLiked([...liked, likedId]);
-        }
       } catch (error) {
-        console.error("Error updating category liked:", error);
+        setLiked(liked.filter((id) => id !== likedId));
+        toast.error("Unable to update category");
       }
     } else {
+      setLiked(liked.filter((id) => id !== likedId));
       try {
-        const response = await fetch("/api/selected-category/route", {
+        await fetch("/api/selected-category/route", {
           method: "DELETE",
           body: JSON.stringify({
             userId,
             likedId,
           }),
         });
-
-        if (response.ok) {
-          setLiked(liked.filter((id) => id !== likedId));
-        }
       } catch (error) {
-        console.error("Error updating category liked:", error);
+        setLiked([...liked, likedId]);
+        toast.error("Unable to update category");
       }
     }
   };
@@ -56,12 +56,12 @@ export function Items({ currentItems, liked, setLiked }: ItemsProps) {
               handleLikedCategories(category.id, event.target.checked)
             }
             checked={liked.includes(category.id)}
-            className={`h-5 w-5 ${
+            className={`h-5 w-5 cursor-pointer ${
               liked.includes(category.id) ? "accent-black" : ""
             }`}
           />
           <label
-            className="ml-4 text-base font-normal"
+            className="ml-4 cursor-pointer text-base font-normal"
             htmlFor={`selected-${category.id}`}
           >
             {category.name}
@@ -70,4 +70,6 @@ export function Items({ currentItems, liked, setLiked }: ItemsProps) {
       ))}
     </div>
   );
-}
+};
+
+export default Items;

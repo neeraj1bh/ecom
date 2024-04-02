@@ -21,7 +21,6 @@ export default async function handler(
     if (user) {
       const hash = user.password;
 
-      console.log(password, hash);
       // Compare hashed password with input password
       bcrypt.compare(password, hash, function (err: any, result: any) {
         if (result === true) {

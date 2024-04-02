@@ -1,6 +1,7 @@
 import React from "react";
-import Dashboard from "~/components/Dashboard";
+
 import withAuth from "~/components/WithAuth";
+import Dashboard from "~/views/Dashboard";
 
 function AuthenticatedDashboard() {
   return <Dashboard />;

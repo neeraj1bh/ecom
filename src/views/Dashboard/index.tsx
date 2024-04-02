@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import LogoutIcon from "~/assets/LogoutIcon";
-import { Pagination } from "./Pagination";
+import CategoriesList from "./CategoriesList";
 import type { LikedCategory } from "~/interfaces/dashboard";
+import toast from "react-hot-toast";
 
 const Dashboard: React.FC = () => {
   const router = useRouter();
@@ -11,7 +12,6 @@ const Dashboard: React.FC = () => {
   const [liked, setLiked] = useState<number[]>([]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     fetchData();
   }, []);
 
@@ -39,13 +39,13 @@ const Dashboard: React.FC = () => {
           );
           setLiked(liked);
         } else {
-          console.error("Error fetching category liked");
+          toast.error("Error fetching category liked");
         }
       } else {
-        console.error("Error fetching liked");
+        toast.error("Error fetching liked categories");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -53,6 +53,7 @@ const Dashboard: React.FC = () => {
     try {
       localStorage.removeItem("userData");
       router.push("/");
+      toast.success("Logged out successfully");
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -76,7 +77,11 @@ const Dashboard: React.FC = () => {
           </p>
           <p className="mt-12 text-xl font-medium">My saved interests!</p>
           <div className="mt-4">
-            <Pagination category={category} liked={liked} setLiked={setLiked} />
+            <CategoriesList
+              category={category}
+              liked={liked}
+              setLiked={setLiked}
+            />
           </div>
         </div>
       </div>
