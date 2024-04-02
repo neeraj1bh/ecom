@@ -1,14 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
 type RequestBody = {
   email: string;
   pin: string;
-  name: string;
-  password: string;
 };
 
 type ResponseData = {
@@ -24,7 +21,7 @@ export default async function handleOTPVerification(
   }
 
   try {
-    const { email, pin, name, password }: RequestBody = JSON.parse(req.body);
+    const { email, pin }: RequestBody = JSON.parse(req.body);
     const existingUser = await prisma.pin.findUnique({
       where: { email, pin },
     });
@@ -32,15 +29,9 @@ export default async function handleOTPVerification(
     if (existingUser) {
       console.log("OTP verified for user:", existingUser.email);
 
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-      await prisma.user.create({
-        data: {
-          name,
-          email,
-          password: hashedPassword,
-        },
+      await prisma.pin.update({
+        where: { email },
+        data: { verified: true },
       });
 
       return res.status(200).json({ message: "OTP verification successful" });

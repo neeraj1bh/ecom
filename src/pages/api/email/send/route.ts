@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import nodemailer from "nodemailer";
 import type { NextApiRequest, NextApiResponse } from "next";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -11,10 +12,15 @@ async function updatePinOrCreate(email: string, pin: number) {
     });
 
     if (existingUser) {
-      await prisma.pin.update({
-        where: { email },
-        data: { pin: pin.toString() },
-      });
+      if (existingUser.verified) {
+        console.log("User already verified.");
+        return { success: false, error: "User already verified." };
+      } else {
+        await prisma.pin.update({
+          where: { email },
+          data: { pin: pin.toString() },
+        });
+      }
     } else {
       await prisma.pin.create({
         data: {
@@ -101,13 +107,35 @@ export default async function handleEmailRequest(
   res: NextApiResponse,
 ) {
   if (req.method === "POST") {
-    const { email } = JSON.parse(req.body);
+    const { name, email, password } = JSON.parse(req.body);
     const pin = Math.floor(10000000 + Math.random() * 90000000);
 
-    await Promise.allSettled([
-      updatePinOrCreate(email, pin),
-      sendEmailWithPin(email, pin),
-    ]);
+    const { success: updateSuccess, error: updateError } =
+      await updatePinOrCreate(email, pin);
+
+    if (!updateSuccess) {
+      return res.status(400).json({ message: updateError });
+    }
+
+    const { success: emailSuccess, error: emailError } = await sendEmailWithPin(
+      email,
+      pin,
+    );
+
+    if (!emailSuccess) {
+      return res.status(400).json({ message: emailError });
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+      },
+    });
 
     res.status(200).json({
       message: "Email sent successfully",

@@ -1,20 +1,19 @@
 import React, { useRef, useState, useEffect } from "react";
-import Button from "./Button";
+import Button from "../../components/Button";
 import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
+import SpinnerIcon from "~/assets/SpinnerIcon";
 
 const MAX_PIN_LENGTH = 8;
 
 interface VerifyProps {
-  name: string;
   email: string;
-  password: string;
 }
 
-const Verify: React.FC<VerifyProps> = ({ name, email, password }) => {
+const Verify: React.FC<VerifyProps> = ({ email }) => {
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
   const [pin, setPin] = useState<number[]>(Array(MAX_PIN_LENGTH).fill(-1));
-  const initialRender = useRef<boolean>(false);
   const inputRefs = useRef<Array<HTMLInputElement | null>>(
     Array(MAX_PIN_LENGTH).fill(null),
   );
@@ -23,24 +22,6 @@ const Verify: React.FC<VerifyProps> = ({ name, email, password }) => {
   useEffect(() => {
     inputRefs.current[activeInput]?.focus();
   }, [activeInput]);
-
-  useEffect(() => {
-    if (!initialRender.current) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      sendEmail(email);
-      initialRender.current = true;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const sendEmail = async (email: string) => {
-    const response = await fetch("/api/email/send/route", {
-      method: "POST",
-      body: JSON.stringify({ email }),
-    });
-    const data = await response.json();
-    console.log(data);
-  };
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     if (e.key === "Backspace") {
@@ -82,35 +63,33 @@ const Verify: React.FC<VerifyProps> = ({ name, email, password }) => {
         setPin(pinArray);
         setActiveInput(pinArray.length - 1);
       } else {
-        console.error("Less or more numbers copied. Please try again.");
+        toast.error("Less or more numbers copied. Please try again.");
       }
     } else {
-      console.error("Copied characters are not numbers.");
+      toast.error("Copied characters are not numbers.");
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
     const pinString = pin.join("");
-    console.log({ name, email, password, pin: pinString });
 
     try {
       const response = await fetch("/api/email/verify/route", {
         method: "POST",
-        body: JSON.stringify({ name, email, password, pin: pinString }),
+        body: JSON.stringify({ email, pin: pinString }),
       });
-      const data = await response.json();
-      console.log(data);
-
       if (response.ok) {
-        console.log("User verified successfully");
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        toast.success("User verified successfully");
         router.push("/");
       } else {
-        console.error("Failed to verify user");
+        toast.error("Failed to verify user");
       }
+      setLoading(false);
     } catch (error) {
-      console.error("Failed to verify user", error);
+      toast.error("Failed to verify user");
+      setLoading(false);
     }
   };
 
@@ -166,9 +145,19 @@ const Verify: React.FC<VerifyProps> = ({ name, email, password }) => {
             </div>
           ))}
         </div>
-        <Button type="submit" className="font-light uppercase tracking-widest">
-          Verify
-        </Button>
+        {loading ? (
+          <Button className="flex items-center justify-center">
+            <SpinnerIcon className="mr-4 animate-spin" />
+            Verifying Email
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            className="font-light uppercase tracking-widest"
+          >
+            Verify
+          </Button>
+        )}
       </form>
     </div>
   );

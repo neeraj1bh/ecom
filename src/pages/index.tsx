@@ -1,7 +1,7 @@
 import Head from "next/head";
-import Login from "~/components/Login";
+import Login from "~/views/Login";
 
-export default function Home() {
+const Home: React.FC = () => {
   return (
     <>
       <Head>
@@ -12,4 +12,6 @@ export default function Home() {
       <Login />
     </>
   );
-}
+};
+
+export default Home;

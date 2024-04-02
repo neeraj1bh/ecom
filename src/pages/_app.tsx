@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 import Navbar from "~/components/Navbar";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,6 +20,16 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <main className={`font-sans ${inter.variable}`}>
       {showNavbar && <Navbar />}
       <Component {...pageProps} />
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          style: {
+            background: "#141414",
+            color: "#fff",
+          },
+          duration: 5000,
+        }}
+      />
     </main>
   );
 };

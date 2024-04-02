@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { type FC, useState } from "react";
 import ReactPaginate from "react-paginate";
 import type { LikedCategory, LikeProps } from "~/interfaces/dashboard";
-import { Items } from "./Items";
+import Items from "./Items";
 
 const itemsPerPage = 6;
 
-interface PaginationProps extends LikeProps {
+interface Props extends LikeProps {
   category: LikedCategory[];
 }
 
-export function Pagination({ category, liked, setLiked }: PaginationProps) {
+const CategoriesList: FC<Props> = ({ category, liked, setLiked }) => {
   const [startItemIndex, setStartItemIndex] = useState(0);
   const endItemIndex = startItemIndex + itemsPerPage;
   const currentItems = category.slice(startItemIndex, endItemIndex);
@@ -47,4 +47,6 @@ export function Pagination({ category, liked, setLiked }: PaginationProps) {
       </div>
     </>
   );
-}
+};
+
+export default CategoriesList;
