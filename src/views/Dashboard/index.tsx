@@ -1,59 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 
 import LogoutIcon from "~/assets/LogoutIcon";
 import CategoriesList from "./CategoriesList";
-import type { LikedCategory } from "~/interfaces/dashboard";
 import toast from "react-hot-toast";
-import Spinner from "~/components/Spinner";
 import Head from "next/head";
 
 const Dashboard: React.FC = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [category, setCategories] = useState<LikedCategory[]>([]);
-  const [liked, setLiked] = useState<number[]>([]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    setLoading(true);
-    const userData = localStorage.getItem("userData");
-    const { id: userId } = userData ? JSON.parse(userData) : null;
-
-    try {
-      const [response, categoryResponse] = await Promise.all([
-        fetch("/api/category/route", { method: "GET" }),
-        fetch(`/api/selected-category/${userId}/route`, {
-          method: "POST",
-          body: JSON.stringify({ userId }),
-        }),
-      ]);
-
-      if (response.ok) {
-        const { res } = await response.json();
-        setCategories(res);
-        if (categoryResponse.ok) {
-          const { res: categoryData } = await categoryResponse.json();
-
-          const liked = categoryData.map(
-            ({ categoryId }: { categoryId: any }) => categoryId,
-          );
-          setLiked(liked);
-        } else {
-          toast.error("Error fetching category liked");
-        }
-      } else {
-        toast.error("Error fetching liked categories");
-      }
-      setLoading(false);
-    } catch (error) {
-      toast.error("Something went wrong");
-      setLoading(false);
-    }
-  };
 
   const logout = async () => {
     try {
@@ -64,10 +18,6 @@ const Dashboard: React.FC = () => {
       console.error("Error logging out:", error);
     }
   };
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <>
@@ -93,11 +43,7 @@ const Dashboard: React.FC = () => {
             </p>
             <p className="mt-12 text-xl font-medium">My saved interests!</p>
             <div className="mt-4">
-              <CategoriesList
-                category={category}
-                liked={liked}
-                setLiked={setLiked}
-              />
+              <CategoriesList />
             </div>
           </div>
         </div>
